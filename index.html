@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BroadScope Digital | Sales Engine Architecture</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e', 
+                            600: '#16a34a',
+                            700: '#15803d',
+                            900: '#14532d',
+                        },
+                        dark: '#0f172a'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #f8fafc; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .funnel-card {
+            transition: all 0.3s ease;
+        }
+        .funnel-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #22c55e;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-dark text-white pt-16 pb-24 px-6 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
+        <div class="max-w-6xl mx-auto relative z-10 text-center">
+            <div class="flex justify-center space-x-3 mb-6">
+                <div class="inline-block px-4 py-1.5 rounded-full bg-brand-500/20 text-brand-500 font-semibold text-sm border border-brand-500/30">
+                    <i class="fas fa-satellite-dish mr-2"></i> GHL Infrastructure Active
+                </div>
+                <div class="inline-block px-4 py-1.5 rounded-full bg-blue-500/20 text-blue-400 font-semibold text-sm border border-blue-500/30">
+                    <i class="fas fa-globe-africa mr-2"></i> Target: Sub-Saharan Africa
+                </div>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">BroadScope Sales Engine</h1>
+            <p class="text-slate-400 max-w-3xl mx-auto text-lg leading-relaxed">
+                Systems engineering, custom software development, and technical team scaling.<br>
+                A qualification-led, peer-to-peer pipeline replacing generic agency pitches with architectural precision.
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-6xl mx-auto px-6 -mt-12 relative z-20 w-full mb-20">
+        
+        <!-- Tab Navigation -->
+        <div class="flex justify-center mb-8 flex-wrap">
+            <div class="bg-white rounded-lg p-1 shadow-sm border border-slate-200 inline-flex flex-wrap justify-center">
+                <button onclick="switchTab('offers')" id="tab-offers" class="px-5 py-2.5 rounded-md text-sm font-medium transition-colors bg-slate-100 text-slate-900 shadow-sm"><i class="fas fa-layer-group mr-2"></i> Offer Stack & ICP</button>
+                <button onclick="switchTab('flow')" id="tab-flow" class="px-5 py-2.5 rounded-md text-sm font-medium transition-colors text-slate-500 hover:text-slate-900"><i class="fas fa-filter mr-2"></i> Funnel Flow</button>
+                <button onclick="switchTab('calculator')" id="tab-calculator" class="px-5 py-2.5 rounded-md text-sm font-medium transition-colors text-slate-500 hover:text-slate-900"><i class="fas fa-calculator mr-2"></i> Scoring Engine</button>
+                <button onclick="switchTab('tech')" id="tab-tech" class="px-5 py-2.5 rounded-md text-sm font-medium transition-colors text-slate-500 hover:text-slate-900"><i class="fas fa-code mr-2"></i> Technical Specs</button>
+            </div>
+        </div>
+
+        <!-- 0. Offer Stack & ICP View -->
+        <div id="view-offers" class="space-y-6">
+            <!-- ICP Section -->
+            <div class="glass-card rounded-xl p-8 border-t-4 border-t-indigo-500">
+                <div class="flex items-center mb-6">
+                    <div class="bg-indigo-100 text-indigo-600 p-3 rounded-lg mr-4"><i class="fas fa-bullseye text-2xl"></i></div>
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900">Ideal Customer Profile (ICP)</h2>
+                        <p class="text-sm text-slate-500">Targeting Sub-Saharan Africa. High-budget decision makers.</p>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="border border-slate-200 rounded-lg p-5 bg-white">
+                        <h3 class="font-bold text-indigo-700 mb-2 flex items-center"><i class="fas fa-graduation-cap mr-2"></i> EdTech Segment</h3>
+                        <p class="text-sm text-slate-600 mb-3">Founders and CTOs of e-learning platforms, LMS providers, and private/independent school networks (IEB, Curro, Cambridge) with budgets >R15M.</p>
+                        <div class="bg-slate-50 p-2 rounded text-xs font-mono text-slate-500 border border-slate-100">Pain Hooks: Scalability, integration with local payment methods.</div>
+                    </div>
+                    <div class="border border-slate-200 rounded-lg p-5 bg-white">
+                        <h3 class="font-bold text-indigo-700 mb-2 flex items-center"><i class="fas fa-wallet mr-2"></i> Fintech Segment</h3>
+                        <p class="text-sm text-slate-600 mb-3">Founders and CTOs at digital wallets, payment gateways, micro-lenders, and agency banking platforms.</p>
+                        <div class="bg-slate-50 p-2 rounded text-xs font-mono text-slate-500 border border-slate-100">Pain Hooks: Complex payment integration, security compliance, specialized engineering talent scarcity.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Offer Stack -->
+            <div class="glass-card rounded-xl p-8 border-t-4 border-t-emerald-500">
+                <div class="flex items-center mb-6">
+                    <div class="bg-emerald-100 text-emerald-600 p-3 rounded-lg mr-4"><i class="fas fa-cubes text-2xl"></i></div>
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900">The Offer Stack*</h2>
+                        <p class="text-sm text-slate-500 mb-1">The "Anti-Agency Builders" framework. Scoped with architectural precision.</p>
+                        <p class="text-xs text-slate-400 italic">* Note: Pricing amounts shown are suggested baseline ranges and are subject to final project scoping.</p>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Dev Leasing -->
+                    <div class="border border-slate-200 rounded-lg p-5 hover:border-emerald-300 transition-colors bg-white shadow-sm">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="font-bold text-slate-800">A. Developer Leasing</h3>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-1 rounded">R45k - R75k /mo</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-4">Full-time dedicated developers (React, Node, Python) vetted for technical speed, working style, and proactive communication.</p>
+                        <ul class="text-xs text-slate-500 space-y-2">
+                            <li><i class="fas fa-check text-emerald-500 mr-2"></i> 14-day de-risked replacement guarantee.</li>
+                            <li><i class="fas fa-check text-emerald-500 mr-2"></i> Screened on the "Proactive Communication Index".</li>
+                        </ul>
+                    </div>
+
+                    <!-- Custom MVP -->
+                    <div class="border border-slate-200 rounded-lg p-5 hover:border-emerald-300 transition-colors bg-white shadow-sm">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="font-bold text-slate-800">B. Custom Apps & MVPs</h3>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-1 rounded">R75k - R150k Build</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-4">Standard web/mobile MVP shipped in 4-6 weeks using "Problems-to-Specs" architecture to eliminate feature creep.</p>
+                        <div class="bg-slate-50 border border-slate-100 rounded p-3 text-xs">
+                            <span class="font-semibold text-slate-700">Wedge Offer:</span> R12.5k MVP Scoping Phase (Blueprint, DB schemas, locked specs).
+                        </div>
+                    </div>
+
+                    <!-- Integrations -->
+                    <div class="border border-slate-200 rounded-lg p-5 hover:border-emerald-300 transition-colors bg-white shadow-sm">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="font-bold text-slate-800">C. System Integrations</h3>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-1 rounded">R45k - R95k Build</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-4">Custom database connectors, REST/GraphQL endpoints, webhook listeners. Built with Circuit-Breaker API fallback patterns.</p>
+                        <div class="bg-slate-50 border border-slate-100 rounded p-3 text-xs">
+                            <span class="font-semibold text-slate-700">Wedge Offer:</span> R15k Integration Map & Blueprint.
+                        </div>
+                    </div>
+
+                    <!-- Web Dev -->
+                    <div class="border border-slate-200 rounded-lg p-5 hover:border-emerald-300 transition-colors bg-white shadow-sm">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="font-bold text-slate-800">D. Website Development</h3>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-1 rounded">R45k Custom</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-4">Full custom redesigns (5+ pages) with headless CMS integrations.</p>
+                        <div class="bg-slate-50 border border-slate-100 rounded p-3 text-xs">
+                            <span class="font-semibold text-slate-700">Wedge Offer:</span> R18.5k High-converting landing page (3-5 days).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 1. Funnel Flow View -->
+        <div id="view-flow" class="hidden space-y-6">
+            
+            <!-- ToF -->
+            <div class="glass-card rounded-xl p-8 funnel-card border-t-4 border-t-blue-500">
+                <div class="flex items-start">
+                    <div class="bg-blue-100 text-blue-600 p-3 rounded-lg mr-5">
+                        <i class="fas fa-filter text-2xl"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <h2 class="text-xl font-bold text-slate-900 mb-2">1. Top of Funnel (Traffic & Capture)</h2>
+                        <p class="text-slate-600 mb-4">Outbound is driven by peer-to-peer engagement. We don't pitch; we ask CTOs to "pressure-test" our scoping blueprints and API patterns.</p>
+                        
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 mb-6 flex flex-wrap gap-2 text-xs font-medium text-slate-600">
+                            <span class="px-2 py-1 bg-white rounded border border-slate-200 shadow-sm"><i class="fas fa-tag text-blue-500 mr-1"></i> "Capacity Bleed" Hook</span>
+                            <span class="px-2 py-1 bg-white rounded border border-slate-200 shadow-sm"><i class="fas fa-tag text-blue-500 mr-1"></i> "Feature Creep" Hook</span>
+                            <span class="px-2 py-1 bg-white rounded border border-slate-200 shadow-sm"><i class="fas fa-tag text-blue-500 mr-1"></i> "Integration Nightmare" Hook</span>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-lg border border-slate-100 shadow-sm">
+                                <div class="font-semibold text-slate-800 mb-1 text-sm uppercase tracking-wider">Input Channels</div>
+                                <ul class="space-y-2 mt-3 text-sm text-slate-600">
+                                    <li><i class="fas fa-envelope text-blue-400 mr-2"></i> Cold Sequences (NESB Filtered)</li>
+                                    <li><i class="fab fa-linkedin text-blue-600 mr-2"></i> LinkedIn Mentorship DMs</li>
+                                    <li><i class="fas fa-globe text-slate-400 mr-2"></i> Organic Website Traffic</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg border border-slate-100 shadow-sm flex flex-col justify-center items-center text-center">
+                                <div class="font-semibold text-slate-800 mb-3 text-sm uppercase tracking-wider">Conversion Point</div>
+                                <a href="https://broadscope.digital/contact" target="_blank" class="inline-flex items-center justify-center px-4 py-2.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors shadow-sm text-sm font-medium w-full">
+                                    Qualification Form <i class="fas fa-external-link-alt ml-2 text-xs opacity-70"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Down Arrow -->
+            <div class="flex justify-center text-slate-300">
+                <i class="fas fa-arrow-down text-xl"></i>
+            </div>
+
+            <!-- MoF -->
+            <div class="glass-card rounded-xl p-8 funnel-card border-t-4 border-t-brand-500">
+                <div class="flex items-start">
+                    <div class="bg-brand-100 text-brand-600 p-3 rounded-lg mr-5">
+                        <i class="fas fa-cogs text-2xl"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <h2 class="text-xl font-bold text-slate-900 mb-2">2. Middle of Funnel (Dynamic Scoring)</h2>
+                        <p class="text-slate-600 mb-6">GHL receives the form data and instantly calculates an operational priority score to route the lead.</p>
+                        
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <!-- Hot -->
+                            <div class="bg-white p-5 rounded-lg border border-red-200 shadow-sm relative overflow-hidden">
+                                <div class="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-bold text-red-700">HOT LEAD</span>
+                                    <span class="text-xs font-bold bg-red-100 text-red-800 px-2 py-1 rounded">Score ≥ 35</span>
+                                </div>
+                                <div class="text-xs font-mono text-slate-500 mb-3">tag: scope::hot</div>
+                                <ul class="text-sm text-slate-700 space-y-2 mt-4">
+                                    <li class="flex"><i class="fas fa-mobile-alt text-red-400 mt-0.5 mr-2 w-4"></i> Instant SMS sent to Albert Jere.</li>
+                                    <li class="flex"><i class="fas fa-calendar-plus text-red-400 mt-0.5 mr-2 w-4"></i> Direct booking link sent via high-priority email.</li>
+                                </ul>
+                            </div>
+                            <!-- Warm -->
+                            <div class="bg-white p-5 rounded-lg border border-amber-200 shadow-sm relative overflow-hidden">
+                                <div class="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-bold text-amber-700">WARM LEAD</span>
+                                    <span class="text-xs font-bold bg-amber-100 text-amber-800 px-2 py-1 rounded">Score 15-34</span>
+                                </div>
+                                <div class="text-xs font-mono text-slate-500 mb-3">tag: scope::warm</div>
+                                <ul class="text-sm text-slate-700 space-y-2 mt-4">
+                                    <li class="flex"><i class="fas fa-envelope-open-text text-amber-400 mt-0.5 mr-2 w-4"></i> Enrolled in 3-Touch Nurture.</li>
+                                    <li class="flex"><i class="fas fa-file-alt text-amber-400 mt-0.5 mr-2 w-4"></i> Pitches "Problems-to-Specs" architecture and "Circuit-Breaker APIs".</li>
+                                </ul>
+                            </div>
+                            <!-- Starter -->
+                            <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm relative overflow-hidden">
+                                <div class="absolute top-0 left-0 w-1 h-full bg-slate-400"></div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-bold text-slate-700">STARTER</span>
+                                    <span class="text-xs font-bold bg-slate-100 text-slate-800 px-2 py-1 rounded">Score < 15</span>
+                                </div>
+                                <div class="text-xs font-mono text-slate-500 mb-3">tag: scope::starter</div>
+                                <ul class="text-sm text-slate-700 space-y-2 mt-4">
+                                    <li class="flex"><i class="fas fa-box text-slate-400 mt-0.5 mr-2 w-4"></i> Route to Low-Ticket Campaigns.</li>
+                                    <li class="flex"><i class="fas fa-tag text-slate-400 mt-0.5 mr-2 w-4"></i> Pitch R12.5k Scoping Blueprint or R18.5k Landing Page.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Down Arrow -->
+            <div class="flex justify-center text-slate-300">
+                <i class="fas fa-arrow-down text-xl"></i>
+            </div>
+
+            <!-- BoF -->
+            <div class="glass-card rounded-xl p-8 funnel-card border-t-4 border-t-purple-500">
+                <div class="flex items-start">
+                    <div class="bg-purple-100 text-purple-600 p-3 rounded-lg mr-5">
+                        <i class="fas fa-calendar-check text-2xl"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <h2 class="text-xl font-bold text-slate-900 mb-2">3. Bottom of Funnel (Booking & Pipeline)</h2>
+                        <p class="text-slate-600 mb-6">Qualified leads book directly onto Albert's calendar, triggering CRM stage updates.</p>
+                        
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between">
+                            <div class="mb-4 md:mb-0">
+                                <div class="font-semibold text-slate-900 mb-1">Discovery Call Booked</div>
+                                <div class="text-sm text-slate-500">Via broadscope.digital/broadscope-booking</div>
+                            </div>
+                            <div class="flex flex-col sm:flex-row items-center gap-3 text-sm">
+                                <span class="bg-purple-50 border border-purple-100 px-4 py-2 rounded-full font-medium text-purple-700">
+                                    <i class="fas fa-exchange-alt mr-1.5 opacity-70"></i> Main Pipeline: Appt Set
+                                </span>
+                                <span class="bg-slate-50 border border-slate-200 px-4 py-2 rounded-full font-medium text-slate-600">
+                                    <i class="fas fa-bell mr-1.5 opacity-70"></i> Auto-Reminders (24h, 1h, 10m)
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Scoring Calculator View -->
+        <div id="view-calculator" class="hidden">
+            <div class="glass-card rounded-xl p-8 max-w-4xl mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-slate-900">Dynamic Scoring Simulator</h2>
+                    <p class="text-slate-500 mt-2">Test how different prospect profiles are routed in GHL.</p>
+                </div>
+
+                <div class="grid md:grid-cols-5 gap-8">
+                    <!-- Form Controls -->
+                    <div class="md:col-span-3 space-y-6">
+                        
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Prospect Role</label>
+                            <select id="calc-role" class="w-full bg-white border border-slate-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-brand-500" onchange="calculateScore()">
+                                <option value="15">Founder / Co-founder (+15)</option>
+                                <option value="15">CTO / Technical Lead (+15)</option>
+                                <option value="10">Operations / Product (+10)</option>
+                                <option value="2">Other (+2)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Company Size</label>
+                            <select id="calc-size" class="w-full bg-white border border-slate-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-brand-500" onchange="calculateScore()">
+                                <option value="20">50+ Employees (+20)</option>
+                                <option value="15">20-50 Employees (+15)</option>
+                                <option value="10">10-20 Employees (+10)</option>
+                                <option value="5">1-10 Employees (+5)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Project Timeline</label>
+                            <select id="calc-timeline" class="w-full bg-white border border-slate-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-brand-500" onchange="calculateScore()">
+                                <option value="20">Immediately (+20)</option>
+                                <option value="15">1-2 Weeks (+15)</option>
+                                <option value="5">3+ Weeks (+5)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Primary Challenge (The Anchor)</label>
+                            <select id="calc-challenge" class="w-full bg-white border border-slate-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-brand-500" onchange="calculateScore()">
+                                <option value="10">Need reliable devs to extend team [Leasing] (+10)</option>
+                                <option value="10">Idea for custom app / need execution [MVP] (+10)</option>
+                                <option value="10">Current systems inefficient [System Dev] (+10)</option>
+                                <option value="5">Need new converting website [Web] (+5)</option>
+                                <option value="0">Not sure yet / Exploring (+0)</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <!-- Result Panel -->
+                    <div class="md:col-span-2">
+                        <div id="score-result-card" class="h-full rounded-xl border p-6 flex flex-col items-center justify-center text-center transition-colors duration-300">
+                            <div class="text-sm font-bold tracking-widest uppercase text-slate-400 mb-2">Lead Score</div>
+                            <div id="score-display" class="text-6xl font-black mb-4">65</div>
+                            <div id="score-tier" class="px-4 py-1.5 rounded-full font-bold text-sm mb-4">HOT LEAD</div>
+                            
+                            <div class="w-full border-t border-slate-200/50 pt-4 mt-2">
+                                <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Automated Action</div>
+                                <div id="score-action" class="text-sm font-medium text-slate-700"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Technical Specs View -->
+        <div id="view-tech" class="hidden">
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Identifiers -->
+                <div class="glass-card rounded-xl p-6">
+                    <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center"><i class="fas fa-fingerprint text-brand-500 mr-2"></i> Core Identifiers</h3>
+                    <table class="w-full text-sm text-left">
+                        <tbody class="divide-y divide-slate-100">
+                            <tr><td class="py-3 font-medium text-slate-600">GHL Sub-Account</td><td class="py-3 font-mono text-xs bg-slate-50 border border-slate-200 px-2 rounded">T8Ks3IP2PQ3VB8XZxg4g</td></tr>
+                            <tr><td class="py-3 font-medium text-slate-600">ToF Form ID</td><td class="py-3 font-mono text-xs bg-slate-50 border border-slate-200 px-2 rounded">Quw71fu0KwvkKUU3Id6P</td></tr>
+                            <tr><td class="py-3 font-medium text-slate-600">Calendar Embed ID</td><td class="py-3 font-mono text-xs bg-slate-50 border border-slate-200 px-2 rounded">TsXXSNstFOsiH5J8WEvt</td></tr>
+                            <tr><td class="py-3 font-medium text-slate-600">Main Sales Pipeline</td><td class="py-3 font-mono text-xs bg-slate-50 border border-slate-200 px-2 rounded">j4HiaKJvMxvxVhkWDN7R</td></tr>
+                            <tr><td class="py-3 font-medium text-slate-600">Onboarding Pipeline</td><td class="py-3 font-mono text-xs bg-slate-50 border border-slate-200 px-2 rounded">ixUQ6QM9ByJzKOQ5u4ap</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Custom Fields -->
+                <div class="glass-card rounded-xl p-6">
+                    <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center"><i class="fas fa-database text-brand-500 mr-2"></i> Custom Field Mapping</h3>
+                    <div class="overflow-hidden rounded-lg border border-slate-200">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-50 text-slate-500 text-xs uppercase">
+                                <tr>
+                                    <th class="px-4 py-3">Field Label</th>
+                                    <th class="px-4 py-3 border-l border-slate-200">GHL Key</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 bg-white">
+                                <tr><td class="px-4 py-2 font-medium">Company Industry</td><td class="px-4 py-2 font-mono text-xs text-slate-500 border-l border-slate-100">lu2d3FWzaW5X40GB2Nzs</td></tr>
+                                <tr><td class="px-4 py-2 font-medium">Company Size</td><td class="px-4 py-2 font-mono text-xs text-slate-500 border-l border-slate-100">1MWEhshYW5J28RPUJCik</td></tr>
+                                <tr><td class="px-4 py-2 font-medium">Your Role</td><td class="px-4 py-2 font-mono text-xs text-slate-500 border-l border-slate-100">rJ13nfyuI6cV2ib93dmQ</td></tr>
+                                <tr><td class="px-4 py-2 font-medium">Primary Challenge</td><td class="px-4 py-2 font-mono text-xs text-slate-500 border-l border-slate-100">yDaEjPmpAiHiap34p7sG</td></tr>
+                                <tr><td class="px-4 py-2 font-medium">Timeline</td><td class="px-4 py-2 font-mono text-xs text-slate-500 border-l border-slate-100">Q3sijeF6902DTiuwfRyo</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Tab Switching Logic
+        function switchTab(tabName) {
+            // Hide all views
+            document.getElementById('view-offers').classList.add('hidden');
+            document.getElementById('view-flow').classList.add('hidden');
+            document.getElementById('view-calculator').classList.add('hidden');
+            document.getElementById('view-tech').classList.add('hidden');
+            
+            // Reset button styles
+            const btns = ['offers', 'flow', 'calculator', 'tech'];
+            btns.forEach(b => {
+                const el = document.getElementById('tab-' + b);
+                el.className = 'px-5 py-2.5 rounded-md text-sm font-medium transition-colors text-slate-500 hover:text-slate-900 hover:bg-slate-50';
+            });
+
+            // Show selected view and highlight button
+            document.getElementById('view-' + tabName).classList.remove('hidden');
+            const activeBtn = document.getElementById('tab-' + tabName);
+            activeBtn.className = 'px-5 py-2.5 rounded-md text-sm font-medium transition-colors bg-slate-100 text-slate-900 shadow-sm';
+
+            if(tabName === 'calculator') calculateScore();
+        }
+
+        // Calculator Logic
+        function calculateScore() {
+            const role = parseInt(document.getElementById('calc-role').value);
+            const size = parseInt(document.getElementById('calc-size').value);
+            const timeline = parseInt(document.getElementById('calc-timeline').value);
+            const challenge = parseInt(document.getElementById('calc-challenge').value);
+            
+            const score = role + size + timeline + challenge;
+            
+            document.getElementById('score-display').innerText = score;
+
+            const card = document.getElementById('score-result-card');
+            const tierDisplay = document.getElementById('score-tier');
+            const actionDisplay = document.getElementById('score-action');
+
+            // Reset classes
+            card.className = "h-full rounded-xl border p-6 flex flex-col items-center justify-center text-center transition-colors duration-300 bg-white";
+            tierDisplay.className = "px-4 py-1.5 rounded-full font-bold text-sm mb-4";
+            document.getElementById('score-display').className = "text-6xl font-black mb-4";
+
+            if(score >= 35) {
+                card.classList.add('border-red-200');
+                document.getElementById('score-display').classList.add('text-red-600');
+                tierDisplay.classList.add('bg-red-100', 'text-red-800');
+                tierDisplay.innerText = "HOT LEAD (≥35)";
+                actionDisplay.innerHTML = "Assign <span class='font-mono bg-slate-100 px-1 border border-slate-200 rounded text-red-600'>scope::hot</span><br>Send SMS Alert to Albert & Auto-Pitch Booking Link";
+            } else if (score >= 15) {
+                card.classList.add('border-amber-200');
+                document.getElementById('score-display').classList.add('text-amber-600');
+                tierDisplay.classList.add('bg-amber-100', 'text-amber-800');
+                tierDisplay.innerText = "WARM LEAD (15-34)";
+                actionDisplay.innerHTML = "Assign <span class='font-mono bg-slate-100 px-1 border border-slate-200 rounded text-amber-600'>scope::warm</span><br>Enroll in 3-Touch Soft Nurture (Problems-to-Specs architecture)";
+            } else {
+                card.classList.add('border-slate-300');
+                document.getElementById('score-display').classList.add('text-slate-600');
+                tierDisplay.classList.add('bg-slate-100', 'text-slate-800');
+                tierDisplay.innerText = "STARTER (<15)";
+                actionDisplay.innerHTML = "Assign <span class='font-mono bg-slate-100 px-1 border border-slate-200 rounded text-slate-600'>scope::starter</span><br>Route to R12.5k Scoping Blueprint campaigns";
+            }
+        }
+
+        // Init
+        switchTab('offers');
+    </script>
+</body>
+</html>
